@@ -21,7 +21,8 @@ A `CLAUDE.md` file at the repo root encodes all design decisions, pedagogical fr
 /curriculum
   /session-01 ... /session-16     One folder per session. Each contains:
     pre-read.ipynb                 Learner reads before the session (~30–45 min)
-    session-notebook-template.ipynb   Skeleton used during the live session
+    classwork-template.ipynb           Skeleton used during the live session
+    classwork-solution.ipynb           Instructor solutions (never shared with learner)
     homework.ipynb                 Assigned at end of session, due before next
     instructor-notes.md            Pedagogical guidance, stall points, common pitfalls
 

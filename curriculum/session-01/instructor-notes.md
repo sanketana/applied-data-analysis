@@ -57,7 +57,7 @@ Syntax coverage is minimal. We're establishing *posture* (how to learn) as much 
 
 ### Block B — Concept bridge: Python as a calculator for health data (0:12–0:22)
 
-Open `session-notebook-template.ipynb` together in Colab. Live-code these four things in order:
+Open `classwork-template.ipynb` together in Colab. Live-code these four things in order:
 
 1. **Print a string.** Type and run `print("I'm learning data analysis")`. Explain: a cell is a block of code; Shift+Enter runs it; output appears below.
 

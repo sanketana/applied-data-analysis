@@ -125,15 +125,15 @@ Total learner time per week: ~1 hr class + 3–4 hrs outside. The ratio is delib
 Every session folder (S2 onwards) contains exactly these four files:
 
 1. **`pre-read.ipynb`** — Learner reads before class. Introduces syntax/vocabulary. Ends with 3 self-check questions with hidden answers.
-2. **`session-notebook-template.ipynb`** — Skeleton used live in class. Scaffolding with `# Your code here` placeholders. **Solutions deliberately blank** — learner types during Block C.
+2. **`classwork-template.ipynb`** — Skeleton used live in class. Scaffolding with `# Your code here` placeholders. **Solutions deliberately blank** — learner types during Block C.
 3. **`homework.ipynb`** — Assigned end of session, due before next. Multi-part with reflection cells + hooks to journal and reference sheet.
 4. **`instructor-notes.md`** — Full session plan: metadata, learning objective, prerequisites, block-by-block delivery, common mistakes, assessment signals, pacing notes, post-session checklist, future delivery notes section.
 
 **Session 1 is the only exception:** `before-session-1-setup.md` instead of `pre-read.ipynb`, because there's no "session 0."
 
-### Pending: instructor-solutions.ipynb (per session)
+### Pending: classwork-solution.ipynb (per session)
 
-Agreed but not yet implemented: each session folder should also have an `instructor-solutions.ipynb` — the expected solutions to every exercise, with instructor comments. Stays in this repo only; **never copied to learner's Drive folder**. Add this for Session 1 and 2 retroactively, and for all new sessions from creation.
+Agreed but not yet implemented: each session folder should also have an `classwork-solution.ipynb` — the expected solutions to every exercise, with instructor comments. Stays in this repo only; **never copied to learner's Drive folder**. Add this for Session 1 and 2 retroactively, and for all new sessions from creation.
 
 ---
 
@@ -153,7 +153,7 @@ Agreed but not yet implemented: each session folder should also have an `instruc
 - 3 self-check questions at the end, with answers hidden below (reveal pattern: "try first, then peek")
 - Tone: patient but not patronizing. Assume intelligent adult with no prior Python.
 
-### For `session-notebook-template.ipynb`
+### For `classwork-template.ipynb`
 - Opens with the session's learning goal stated plainly
 - Includes a quick recap of the pre-read (3–5 cells max)
 - Block C exercises use `# Your code here` placeholders — solutions are NEVER pre-filled in the template
@@ -189,10 +189,10 @@ For each upcoming session N:
 2. Open `curriculum/session-N/` and read `instructor-notes.md`
 3. Copy relevant files into the learner's Drive folder:
    - ✅ `pre-read.ipynb`
-   - ✅ `session-notebook-template.ipynb` (renamed to `session-NN-notes.ipynb` for the learner)
+   - ✅ `classwork-template.ipynb` (renamed to `session-NN-notes.ipynb` for the learner)
    - ✅ `homework.ipynb`
    - ❌ NOT `instructor-notes.md`
-   - ❌ NOT `instructor-solutions.ipynb` (when it exists)
+   - ❌ NOT `classwork-solution.ipynb` (when it exists)
 4. Share pre-read with learner 2 days before class (WhatsApp nudge + Drive link)
 5. Deliver the session per the block plan
 6. Post-session: add any useful observations to `instructor-notes.md` → "Future delivery notes" section, commit
@@ -241,7 +241,7 @@ For each upcoming session N:
 ### Things to avoid
 - Don't drift from the block structure. Every session = A/B/C/D/E, 60 min.
 - Don't add out-of-scope content even if it seems useful (see out-of-scope list above).
-- Don't pre-fill solutions in `session-notebook-template.ipynb` — that kills productive struggle.
+- Don't pre-fill solutions in `classwork-template.ipynb` — that kills productive struggle.
 - Don't over-explain in instructor notes. Instructors are professionals; they need signal, not hand-holding.
 - Don't add emoji or exclamation marks to learner-facing content beyond what Sessions 1 and 2 already use (minimal).
 - Don't introduce new pedagogical patterns without flagging the deviation and checking with the maintainer.

@@ -63,7 +63,7 @@ Standard structure from here on. Don't skip.
 
 The pre-read has introduced the syntax. Your job: show *why* we care.
 
-Open `session-notebook-template.ipynb`. Live-code with the learner watching:
+Open `classwork-template.ipynb`. Live-code with the learner watching:
 
 1. **A list of values is how pandas thinks.** Type:
    ```python
