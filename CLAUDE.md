@@ -217,19 +217,20 @@ For each upcoming session N:
 
 - ✅ **Session 1** — Orientation, first code, first DataFrame (all files complete)
 - ✅ **Session 2** — Lists/dicts → Pandas columns, single-vs-double brackets stall point (all files complete)
-- ⏳ **Sessions 3–16** — To design
+- ✅ **Session 3** — Control flow, boolean filtering, loop vs vectorized stall point (all files complete)
+- ⏳ **Sessions 4–16** — To design
 
-### Session 3 design (next up)
+### Session 4 design (next up)
 
-- **Topic:** Control flow — if/else and loops — applied to the patient CSV
-- **Pre-read covers:** if/else syntax, for loops over lists, comparison operators, boolean logic
-- **Live session focus:** Using control flow for data filtering; bridges to the boolean-filtering stretch from Session 2 homework ("remember that weird `df[df['sex']=='M']` thing? Here's why it works")
-- **Stall point:** Likely the difference between iterating with a Python loop vs. using pandas vectorized operations — learner will want to loop through DataFrame rows (common beginner trap); we show them the pandas way is both faster and more readable
-- **Homework artifact:** A short filter-and-summarize exercise producing a group comparison (e.g., mean BP by sex, mean weight by age bracket)
+- **Topic:** Functions — reusable operations. Introduce `def`, parameters, return values. Build a small health-data utility.
+- **Pre-read covers:** `def` syntax, parameters, return values, calling functions
+- **Live session focus:** The repetitive if/elif/else block from Session 3 homework (BMI classification) becomes the motivation: "You wrote that same block three times. Let's fix that." Wrap it in a function, then apply it.
+- **Stall point:** Likely the difference between printing inside a function vs returning a value. Learners confuse `print()` with `return`.
+- **Homework artifact:** A small health-data utility: a `classify_bmi()` function and a `classify_bp()` function, applied to the patient CSV.
 
-### Sessions 4–16 (outline only — full design pending)
+### Sessions 5–16 (outline only — full design pending)
 
-- **S4:** Functions — reusable operations. Introduce `def`, parameters, return values. Build a small health-data utility.
+- **S5:** CSV workflow consolidation — the learner takes a messy CSV and produces a clean analysis script. Capstone of Phase 1.
 - **S5:** CSV workflow consolidation — the learner takes a messy CSV and produces a clean analysis script. Capstone of Phase 1.
 - **S6:** NHANES introduction — file organization, XPT format, first download. Pre-read includes CDC site navigation.
 - **S7:** **Big stall point session.** First merge on SEQN. Design to surface row-explosion.
