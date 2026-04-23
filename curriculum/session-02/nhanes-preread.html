@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Understanding NHANES — A Visual Pre-read</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Structure — colors */
+  --bg: hsl(40, 22%, 97%);
+  --bg-card: hsl(40, 25%, 99%);
+  --bg-sunken: hsl(40, 18%, 94%);
+  --text: hsl(200, 20%, 12%);
+  --text-dim: hsl(200, 10%, 42%);
+  --text-faint: hsl(200, 8%, 62%);
+  --border: hsl(40, 12%, 86%);
+  --border-strong: hsl(40, 10%, 78%);
+
+  /* Accent — deep teal (clinical, calm, serious) */
+  --accent-50:  hsl(180, 40%, 96%);
+  --accent-100: hsl(180, 35%, 90%);
+  --accent-200: hsl(180, 32%, 78%);
+  --accent-400: hsl(183, 45%, 42%);
+  --accent-600: hsl(185, 60%, 28%);
+  --accent-800: hsl(188, 70%, 16%);
+
+  /* Secondary encodings (used sparingly) */
+  --warm: hsl(18, 55%, 45%);      /* terracotta — warning, attention */
+  --warm-bg: hsl(20, 50%, 95%);
+  --amber: hsl(36, 75%, 46%);
+  --amber-bg: hsl(40, 70%, 94%);
+  --green: hsl(150, 30%, 35%);
+  --green-bg: hsl(150, 30%, 93%);
+
+  /* Spacing scale */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px;
+  --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px; --s-10: 128px;
+
+  /* Type scale */
+  --t-xs: 12px; --t-sm: 13px; --t-base: 15px; --t-md: 17px;
+  --t-lg: 20px; --t-xl: 26px; --t-2xl: 34px; --t-3xl: 46px; --t-4xl: 64px;
+
+  /* Fonts */
+  --f-display: 'Instrument Serif', Georgia, serif;
+  --f-body: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --f-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+
+  /* Radii + shadows */
+  --r-sm: 4px; --r-md: 8px; --r-lg: 14px;
+  --shadow-sm: 0 1px 2px hsla(200, 20%, 15%, 0.04), 0 0 0 1px var(--border);
+  --shadow-md: 0 4px 12px hsla(200, 20%, 15%, 0.06), 0 1px 3px hsla(200, 20%, 15%, 0.04);
+  --shadow-lg: 0 12px 32px hsla(200, 20%, 15%, 0.08), 0 2px 6px hsla(200, 20%, 15%, 0.05);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--f-body);
+  font-size: var(--t-base);
+  line-height: 1.65;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Structural containers ───────────────────────────────── */
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 var(--s-5); }
+.reading { max-width: 680px; margin: 0 auto; padding: 0 var(--s-5); }
+section { padding: var(--s-9) 0; border-top: 1px solid var(--border); }
+section:first-of-type { border-top: none; }
+
+/* ── Header / hero ───────────────────────────────────────── */
+.hero {
+  padding: var(--s-9) 0 var(--s-8);
+  border-top: none;
+}
+.eyebrow {
+  font-family: var(--f-body);
+  font-size: var(--t-xs);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-600);
+  margin-bottom: var(--s-5);
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+}
+.eyebrow::before {
+  content: '';
+  width: 32px; height: 1px;
+  background: var(--accent-600);
+}
+.hero h1 {
+  font-family: var(--f-display);
+  font-weight: 400;
+  font-size: var(--t-4xl);
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  margin-bottom: var(--s-5);
+  max-width: 880px;
+}
+.hero h1 em {
+  font-style: italic;
+  color: var(--accent-600);
+}
+.hero .lede {
+  font-family: var(--f-display);
+  font-size: var(--t-xl);
+  line-height: 1.45;
+  color: var(--text-dim);
+  font-style: italic;
+  max-width: 640px;
+  margin-bottom: var(--s-7);
+}
+.hero-meta {
+  display: flex;
+  gap: var(--s-6);
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--border);
+  font-size: var(--t-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.hero-meta strong { color: var(--text-dim); font-weight: 500; }
+
+/* ── Section headers ─────────────────────────────────────── */
+.section-num {
+  font-family: var(--f-mono);
+  font-size: var(--t-sm);
+  color: var(--accent-600);
+  margin-bottom: var(--s-3);
+  letter-spacing: 0.08em;
+}
+h2.section-title {
+  font-family: var(--f-display);
+  font-size: var(--t-3xl);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--s-5);
+  max-width: 720px;
+}
+h2.section-title em { font-style: italic; color: var(--accent-600); }
+.section-intro {
+  font-size: var(--t-md);
+  color: var(--text-dim);
+  line-height: 1.6;
+  max-width: 640px;
+  margin-bottom: var(--s-7);
+}
+
+h3 {
+  font-family: var(--f-body);
+  font-weight: 600;
+  font-size: var(--t-md);
+  letter-spacing: -0.005em;
+  margin-top: var(--s-7);
+  margin-bottom: var(--s-3);
+}
+p { margin-bottom: var(--s-4); }
+p + p { margin-top: 0; }
+
+/* ── Anatomy of an identifier ────────────────────────────── */
+.anatomy {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: var(--s-7) var(--s-6);
+  margin: var(--s-7) 0;
+}
+.anatomy-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  font-family: var(--f-mono);
+  font-size: 32px;
+  font-weight: 500;
+  background: var(--bg-sunken);
+  padding: var(--s-4) var(--s-5);
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  margin-bottom: var(--s-6);
+}
+.anatomy-chip .pfx { color: var(--accent-600); }
+.anatomy-chip .sub { color: var(--warm); }
+.anatomy-chip .name { color: var(--text); }
+.anatomy-legend {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--s-5);
+  margin-top: var(--s-3);
+}
+.anatomy-legend-item {
+  border-left: 2px solid;
+  padding-left: var(--s-4);
+}
+.anatomy-legend-item:nth-child(1) { border-color: var(--accent-600); }
+.anatomy-legend-item:nth-child(2) { border-color: var(--warm); }
+.anatomy-legend-item:nth-child(3) { border-color: var(--text); }
+.anatomy-legend-item .lbl {
+  font-size: var(--t-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+  margin-bottom: var(--s-1);
+}
+.anatomy-legend-item .desc {
+  font-size: var(--t-sm);
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+/* ── Stat cards ──────────────────────────────────────────── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--s-4);
+  margin: var(--s-6) 0;
+}
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: var(--s-5);
+}
+.stat-card .num {
+  font-family: var(--f-display);
+  font-size: 44px;
+  line-height: 1;
+  font-weight: 400;
+  color: var(--accent-600);
+  margin-bottom: var(--s-3);
+  letter-spacing: -0.02em;
+}
+.stat-card .num .unit {
+  font-size: var(--t-md);
+  color: var(--text-dim);
+  margin-left: 2px;
+}
+.stat-card .label {
+  font-size: var(--t-sm);
+  color: var(--text-dim);
+  line-height: 1.45;
+}
+
+/* ── File browser ────────────────────────────────────────── */
+.file-browser {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  min-height: 520px;
+  margin: var(--s-6) 0;
+}
+.file-list {
+  background: var(--bg-sunken);
+  border-right: 1px solid var(--border);
+  padding: var(--s-4) 0;
+}
+.file-list-label {
+  font-size: var(--t-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  padding: var(--s-2) var(--s-5) var(--s-3);
+}
+.file-item {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  padding: var(--s-3) var(--s-5);
+  cursor: pointer;
+  font-size: var(--t-sm);
+  border-left: 2px solid transparent;
+  transition: background 0.15s, border-color 0.15s;
+}
+.file-item:hover { background: hsl(40, 20%, 91%); }
+.file-item.active {
+  background: var(--accent-50);
+  border-left-color: var(--accent-600);
+}
+.file-item .fname {
+  font-family: var(--f-mono);
+  font-weight: 500;
+  color: var(--text);
+}
+.file-item.active .fname { color: var(--accent-600); }
+.file-item .fcat {
+  font-size: 11px;
+  color: var(--text-faint);
+  display: block;
+  margin-top: 2px;
+}
+.file-detail { padding: var(--s-6); overflow: hidden; }
+.file-detail-header { margin-bottom: var(--s-5); }
+.file-detail-title {
+  font-family: var(--f-display);
+  font-size: var(--t-2xl);
+  font-weight: 400;
+  line-height: 1.1;
+  margin-bottom: var(--s-2);
+}
+.file-detail-sub {
+  font-size: var(--t-sm);
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+.file-detail-stats {
+  display: flex;
+  gap: var(--s-6);
+  padding: var(--s-4) 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--s-5);
+}
+.fds { font-size: var(--t-xs); color: var(--text-faint); letter-spacing: 0.08em; text-transform: uppercase; }
+.fds strong {
+  display: block;
+  font-family: var(--f-display);
+  font-size: var(--t-xl);
+  color: var(--accent-600);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+  line-height: 1.2;
+  margin-top: var(--s-1);
+}
+.file-vars {
+  font-size: var(--t-sm);
+}
+.var-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: var(--s-4);
+  padding: var(--s-3) 0;
+  border-bottom: 1px solid var(--border);
+  align-items: baseline;
+}
+.var-row:last-child { border-bottom: none; }
+.var-code {
+  font-family: var(--f-mono);
+  color: var(--accent-600);
+  font-weight: 500;
+  font-size: var(--t-sm);
+}
+.var-label { color: var(--text-dim); line-height: 1.5; }
+
+/* ── Merge diagram ───────────────────────────────────────── */
+.merge-demo { margin: var(--s-7) 0; }
+.merge-files {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-4);
+  margin-bottom: var(--s-5);
+}
+.merge-file {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: var(--s-4);
+  font-size: var(--t-xs);
+}
+.merge-file-name {
+  font-family: var(--f-mono);
+  font-weight: 500;
+  color: var(--accent-600);
+  font-size: var(--t-sm);
+  margin-bottom: var(--s-3);
+  padding-bottom: var(--s-2);
+  border-bottom: 1px solid var(--border);
+}
+.merge-file table { width: 100%; border-collapse: collapse; font-family: var(--f-mono); font-size: 11px; }
+.merge-file th { text-align: left; padding: 3px 4px; color: var(--text-faint); font-weight: 400; text-transform: uppercase; letter-spacing: 0.05em; font-size: 10px; }
+.merge-file td { padding: 3px 4px; color: var(--text-dim); }
+.merge-file td.seqn { color: var(--accent-600); font-weight: 500; }
+.merge-arrow {
+  text-align: center;
+  font-family: var(--f-display);
+  font-style: italic;
+  font-size: var(--t-md);
+  color: var(--text-faint);
+  margin: var(--s-3) 0;
+}
+.merge-result {
+  background: var(--accent-50);
+  border: 1px solid var(--accent-200);
+  border-radius: var(--r-md);
+  padding: var(--s-4);
+}
+.merge-result-name {
+  font-family: var(--f-mono);
+  font-weight: 500;
+  color: var(--accent-800);
+  font-size: var(--t-sm);
+  margin-bottom: var(--s-3);
+}
+.merge-result table { width: 100%; border-collapse: collapse; font-family: var(--f-mono); font-size: 11px; }
+.merge-result th { text-align: left; padding: 4px 6px; color: var(--accent-800); font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.7; }
+.merge-result td { padding: 4px 6px; color: var(--accent-800); }
+.merge-result td.seqn { font-weight: 500; }
+
+/* ── Interactive data table ──────────────────────────────── */
+.data-view-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--s-5);
+}
+.dv-tab {
+  padding: var(--s-3) var(--s-5);
+  cursor: pointer;
+  font-size: var(--t-sm);
+  color: var(--text-dim);
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.dv-tab:hover { color: var(--text); }
+.dv-tab.active { color: var(--accent-600); border-bottom-color: var(--accent-600); }
+.dv-panel { display: none; }
+.dv-panel.active { display: block; }
+
+.data-table-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  overflow-x: auto;
+}
+.data-table { width: 100%; border-collapse: collapse; font-size: var(--t-sm); }
+.data-table th {
+  text-align: left;
+  padding: var(--s-3) var(--s-4);
+  background: var(--bg-sunken);
+  font-weight: 500;
+  font-size: var(--t-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.data-table td {
+  padding: var(--s-3) var(--s-4);
+  border-bottom: 1px solid var(--border);
+  font-family: var(--f-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table td.seqn { color: var(--accent-600); font-weight: 500; }
+.data-table td.coded {
+  color: var(--warm);
+  background: var(--warm-bg);
+  font-weight: 500;
+}
+.data-table td.decoded {
+  font-family: var(--f-body);
+  color: var(--green);
+  background: var(--green-bg);
+  font-weight: 500;
+}
+.data-table td.missing {
+  color: var(--warm);
+  font-style: italic;
+  opacity: 0.8;
+}
+.data-table td.number { color: var(--text); }
+
+.annotation {
+  background: var(--amber-bg);
+  border-left: 3px solid var(--amber);
+  padding: var(--s-4) var(--s-5);
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  margin: var(--s-5) 0;
+  font-size: var(--t-sm);
+  color: var(--text-dim);
+}
+.annotation strong { color: var(--text); }
+
+/* ── Missing data ────────────────────────────────────────── */
+.missing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-5);
+  margin: var(--s-6) 0;
+}
+.missing-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: var(--s-5);
+}
+.missing-card h4 {
+  font-size: var(--t-sm);
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: var(--s-2);
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+.missing-card h4::before {
+  content: '';
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent-600);
+}
+.missing-card p {
+  font-size: var(--t-sm);
+  color: var(--text-dim);
+  margin-bottom: var(--s-2);
+  line-height: 1.55;
+}
+.missing-card .code-hint {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  color: var(--warm);
+  background: var(--warm-bg);
+  padding: 2px 6px;
+  border-radius: var(--r-sm);
+  display: inline-block;
+}
+.warning-callout {
+  background: linear-gradient(180deg, var(--warm-bg) 0%, var(--bg-card) 100%);
+  border: 1px solid hsl(18, 50%, 85%);
+  border-left: 4px solid var(--warm);
+  border-radius: var(--r-md);
+  padding: var(--s-5) var(--s-6);
+  margin: var(--s-6) 0;
+}
+.warning-callout .wc-label {
+  font-size: var(--t-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--warm);
+  font-weight: 600;
+  margin-bottom: var(--s-2);
+}
+.warning-callout h4 {
+  font-family: var(--f-display);
+  font-size: var(--t-xl);
+  font-weight: 400;
+  margin-bottom: var(--s-3);
+  line-height: 1.25;
+}
+.warning-callout p { font-size: var(--t-sm); color: var(--text-dim); margin-bottom: var(--s-2); }
+
+/* ── Concept cards ───────────────────────────────────────── */
+.concept-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--s-4);
+  margin: var(--s-6) 0;
+}
+.concept-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: var(--s-5) var(--s-6);
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s;
+}
+.concept-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.concept-card .cc-num {
+  font-family: var(--f-mono);
+  font-size: var(--t-xs);
+  color: var(--accent-600);
+  letter-spacing: 0.1em;
+  margin-bottom: var(--s-3);
+}
+.concept-card h4 {
+  font-family: var(--f-display);
+  font-size: var(--t-xl);
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: var(--s-3);
+}
+.concept-card p { font-size: var(--t-sm); color: var(--text-dim); line-height: 1.55; margin-bottom: 0; }
+
+/* ── Prefix explorer ─────────────────────────────────────── */
+.prefix-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--s-3);
+  margin: var(--s-5) 0;
+}
+.prefix-chip {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: var(--s-4);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.prefix-chip:hover { border-color: var(--accent-400); background: var(--accent-50); }
+.prefix-chip.active { border-color: var(--accent-600); background: var(--accent-50); }
+.prefix-chip .pcode {
+  font-family: var(--f-mono);
+  font-size: var(--t-md);
+  font-weight: 500;
+  color: var(--accent-600);
+  margin-bottom: var(--s-2);
+}
+.prefix-chip .pdesc {
+  font-size: var(--t-xs);
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+.prefix-detail {
+  background: var(--accent-50);
+  border: 1px solid var(--accent-200);
+  border-radius: var(--r-md);
+  padding: var(--s-5);
+  margin-top: var(--s-4);
+  display: none;
+}
+.prefix-detail.show { display: block; }
+.prefix-detail h5 { font-size: var(--t-sm); margin-bottom: var(--s-3); color: var(--accent-800); font-weight: 600; }
+.prefix-detail .examples { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-2); font-size: var(--t-sm); }
+.prefix-detail .examples div { font-family: var(--f-mono); color: var(--text); font-size: 12px; }
+.prefix-detail .examples div span { color: var(--text-dim); font-family: var(--f-body); margin-left: var(--s-2); }
+
+/* ── Nav ─────────────────────────────────────────────────── */
+.toc {
+  position: sticky;
+  top: 0;
+  background: hsla(40, 22%, 97%, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  z-index: 10;
+  padding: var(--s-3) 0;
+}
+.toc-inner { display: flex; align-items: center; gap: var(--s-5); }
+.toc-brand {
+  font-family: var(--f-display);
+  font-size: var(--t-md);
+  font-style: italic;
+  color: var(--accent-600);
+}
+.toc-links { display: flex; gap: var(--s-5); font-size: var(--t-xs); letter-spacing: 0.06em; }
+.toc-links a {
+  text-decoration: none;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  transition: color 0.15s;
+}
+.toc-links a:hover { color: var(--accent-600); }
+
+/* ── Sparkline ───────────────────────────────────────────── */
+.volumetric-row {
+  display: grid;
+  grid-template-columns: 180px 1fr 80px;
+  gap: var(--s-4);
+  align-items: center;
+  padding: var(--s-3) 0;
+  border-bottom: 1px solid var(--border);
+  font-size: var(--t-sm);
+}
+.volumetric-row:last-child { border-bottom: none; }
+.volumetric-row .v-name { color: var(--text); font-weight: 500; }
+.volumetric-row .v-bar {
+  background: var(--bg-sunken);
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+.volumetric-row .v-bar-fill {
+  background: var(--accent-400);
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.volumetric-row .v-count {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+  text-align: right;
+}
+
+/* ── Footer ──────────────────────────────────────────────── */
+footer {
+  padding: var(--s-8) 0 var(--s-7);
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: var(--t-sm);
+  color: var(--text-faint);
+}
+footer em {
+  font-family: var(--f-display);
+  color: var(--accent-600);
+  font-style: italic;
+}
+
+/* ── Entry animation ─────────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .fade-up { opacity: 0; transform: translateY(12px); animation: fu 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+  .fade-up:nth-child(2) { animation-delay: 0.1s; }
+  .fade-up:nth-child(3) { animation-delay: 0.2s; }
+  .fade-up:nth-child(4) { animation-delay: 0.3s; }
+  @keyframes fu { to { opacity: 1; transform: translateY(0); } }
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .hero h1 { font-size: var(--t-3xl); }
+  .hero .lede { font-size: var(--t-md); }
+  h2.section-title { font-size: var(--t-2xl); }
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .file-browser { grid-template-columns: 1fr; min-height: auto; }
+  .file-list { border-right: none; border-bottom: 1px solid var(--border); max-height: 200px; overflow-y: auto; }
+  .anatomy-legend { grid-template-columns: 1fr; }
+  .concept-grid { grid-template-columns: 1fr; }
+  .merge-files { grid-template-columns: 1fr; }
+  .missing-grid { grid-template-columns: 1fr; }
+  .toc-links { display: none; }
+  .volumetric-row { grid-template-columns: 120px 1fr 70px; }
+  .hero-meta { flex-direction: column; gap: var(--s-2); }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Navigation ───────────────────────────────────────── -->
+<div class="toc">
+  <div class="wrap toc-inner">
+    <div class="toc-brand">NHANES, read visually</div>
+    <div class="toc-links">
+      <a href="#what">What it is</a>
+      <a href="#files">The files</a>
+      <a href="#anatomy">Anatomy</a>
+      <a href="#merge">Joining</a>
+      <a href="#data">Sample data</a>
+      <a href="#missing">Missingness</a>
+      <a href="#takeaways">Takeaways</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── Hero ─────────────────────────────────────────────── -->
+<header class="wrap hero">
+  <div class="fade-up">
+    <div class="eyebrow">Applied Data Analysis · Pre-read</div>
+    <h1>The dataset you'll learn to <em>read, clean, and question</em> — long before you write a line of code.</h1>
+    <p class="lede">NHANES is the richest public health dataset in the world. This is a map of what's inside it, written for the clinician who will analyze it.</p>
+    <div class="hero-meta">
+      <div><strong>10 min</strong> · reading time</div>
+      <div><strong>No prior coding</strong> · needed</div>
+      <div><strong>Scroll or jump</strong> · sections are independent</div>
+    </div>
+  </div>
+</header>
+
+<!-- ── Section 1: What it is ────────────────────────────── -->
+<section id="what">
+  <div class="reading">
+    <div class="section-num">§ 01</div>
+    <h2 class="section-title">A quiet, <em>forty-year</em> study of the American body.</h2>
+    <p class="section-intro">The CDC runs a continuous survey. Every two years it recruits a new, nationally representative sample of Americans — roughly five thousand per year — and subjects each one to interview, examination, and laboratory work.</p>
+    <p>You've seen its findings without knowing it. The obesity trend curves, the lead-exposure decline, the prediabetes prevalence — almost every large claim about American public health is, at its source, a NHANES analysis.</p>
+    <p>What makes it unusual: the data is <em>measured</em>, not self-reported. Participants don't tell CDC staff their weight — they step on a scale. They don't estimate their cholesterol — blood is drawn, shipped to a lab, assayed, returned. For a clinician, this distinction is everything.</p>
+  </div>
+
+  <div class="wrap">
+    <div class="stat-grid" style="margin-top: var(--s-8);">
+      <div class="stat-card fade-up">
+        <div class="num">5,000<span class="unit">/yr</span></div>
+        <div class="label">New participants recruited each year, across all ages</div>
+      </div>
+      <div class="stat-card fade-up">
+        <div class="num">15</div>
+        <div class="label">Two-year cycles released since 1999 (the "continuous" era)</div>
+      </div>
+      <div class="stat-card fade-up">
+        <div class="num">250<span class="unit">+</span></div>
+        <div class="label">Separate data files per cycle — topic-modular, not monolithic</div>
+      </div>
+      <div class="stat-card fade-up">
+        <div class="num">4,740</div>
+        <div class="label">Distinct variables measured when all cycles are harmonized</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Section 2: The five families ─────────────────────── -->
+<section id="files">
+  <div class="reading">
+    <div class="section-num">§ 02</div>
+    <h2 class="section-title">Five families of files. <em>One key</em> binds them.</h2>
+    <p class="section-intro">Rather than publishing one giant table, the CDC breaks each cycle into modular files grouped by how the data was collected. You pick up only the files your question needs.</p>
+    <p>Every file shares a single column: <strong>SEQN</strong>, a sequence number assigned to each participant. This is the universal key. Whatever you combine — demographics with lab work, body measures with diabetes questionnaire — you combine <em>on SEQN</em>. Think of it as the patient identifier that follows one person through their NHANES visit.</p>
+  </div>
+
+  <div class="wrap">
+    <div class="file-browser">
+      <div class="file-list">
+        <div class="file-list-label">Click to inspect</div>
+        <div class="file-item active" data-file="demo">
+          <div>
+            <div class="fname">DEMO_J</div>
+            <div class="fcat">Demographics</div>
+          </div>
+        </div>
+        <div class="file-item" data-file="bmx">
+          <div>
+            <div class="fname">BMX_J</div>
+            <div class="fcat">Examination · Body</div>
+          </div>
+        </div>
+        <div class="file-item" data-file="bpx">
+          <div>
+            <div class="fname">BPX_J</div>
+            <div class="fcat">Examination · BP</div>
+          </div>
+        </div>
+        <div class="file-item" data-file="trigly">
+          <div>
+            <div class="fname">TRIGLY_J</div>
+            <div class="fcat">Laboratory · Lipids</div>
+          </div>
+        </div>
+        <div class="file-item" data-file="glu">
+          <div>
+            <div class="fname">GLU_J</div>
+            <div class="fcat">Laboratory · Glucose</div>
+          </div>
+        </div>
+        <div class="file-item" data-file="diq">
+          <div>
+            <div class="fname">DIQ_J</div>
+            <div class="fcat">Questionnaire · Diabetes</div>
+          </div>
+        </div>
+        <div class="file-item" data-file="smq">
+          <div>
+            <div class="fname">SMQ_J</div>
+            <div class="fcat">Questionnaire · Smoking</div>
+          </div>
+        </div>
+        <div class="file-item" data-file="drx">
+          <div>
+            <div class="fname">DR1TOT_J</div>
+            <div class="fcat">Dietary · 24-hr recall</div>
+          </div>
+        </div>
+      </div>
+      <div class="file-detail" id="file-detail"></div>
+    </div>
+
+    <p style="font-size: var(--t-sm); color: var(--text-faint); margin-top: var(--s-4); text-align: center;">The suffix "_J" marks the 2017–2018 cycle. Earlier cycles use _A through _I; newer ones P_ (pre-pandemic).</p>
+  </div>
+</section>
+
+<!-- ── Section 3: Anatomy of a variable name ────────────── -->
+<section id="anatomy">
+  <div class="reading">
+    <div class="section-num">§ 03</div>
+    <h2 class="section-title">A variable name is a <em>sentence</em>, not a code.</h2>
+    <p class="section-intro">Every NHANES column has a name that looks cryptic — <code style="font-family: var(--f-mono); background: var(--bg-sunken); padding: 2px 5px; border-radius: 3px; font-size: 13px;">RIAGENDR</code>, <code style="font-family: var(--f-mono); background: var(--bg-sunken); padding: 2px 5px; border-radius: 3px; font-size: 13px;">BMXWAIST</code>, <code style="font-family: var(--f-mono); background: var(--bg-sunken); padding: 2px 5px; border-radius: 3px; font-size: 13px;">LBXGLU</code>. Once you know the structure, you can read them like a diagnosis.</p>
+
+    <div class="anatomy">
+      <div style="text-align: center;">
+        <div class="anatomy-chip">
+          <span class="pfx">LB</span><span class="sub">X</span><span class="name">GLU</span>
+        </div>
+      </div>
+      <div class="anatomy-legend">
+        <div class="anatomy-legend-item">
+          <div class="lbl">Source file</div>
+          <div class="desc"><strong style="color: var(--text);">LB</strong> = Laboratory. Tells you which family of files this variable lives in.</div>
+        </div>
+        <div class="anatomy-legend-item">
+          <div class="lbl">Data type</div>
+          <div class="desc"><strong style="color: var(--text);">X</strong> = measured value. <code style="font-family: var(--f-mono); font-size: 12px;">D</code> means derived, <code style="font-family: var(--f-mono); font-size: 12px;">LC</code> means "limit comment" (was it detectable?).</div>
+        </div>
+        <div class="anatomy-legend-item">
+          <div class="lbl">What it measures</div>
+          <div class="desc"><strong style="color: var(--text);">GLU</strong> = glucose. The mnemonic — usually the first few letters of the physiological name.</div>
+        </div>
+      </div>
+    </div>
+
+    <p>Once you internalize the pattern, it reads plainly. <code style="font-family: var(--f-mono); background: var(--bg-sunken); padding: 2px 5px; border-radius: 3px; font-size: 13px;">BMXHT</code> is "Body Measures, actual measured value, height." <code style="font-family: var(--f-mono); background: var(--bg-sunken); padding: 2px 5px; border-radius: 3px; font-size: 13px;">URXBPH</code> is "Urine, actual value, bisphenol-A." The question numbers in questionnaire variables are literally the printed question numbers on the interview form — <code style="font-family: var(--f-mono); background: var(--bg-sunken); padding: 2px 5px; border-radius: 3px; font-size: 13px;">DIQ010</code> is "Diabetes questionnaire, question 10."</p>
+  </div>
+
+  <div class="wrap">
+    <h3 style="margin-top: var(--s-7); margin-bottom: var(--s-3); text-align: center;">Common prefixes, clickable</h3>
+    <p style="font-size: var(--t-sm); color: var(--text-faint); text-align: center; margin-bottom: var(--s-5);">Click any prefix to see examples</p>
+    <div class="prefix-grid">
+      <div class="prefix-chip" data-prefix="bmx">
+        <div class="pcode">BMX</div>
+        <div class="pdesc">Body measures — height, weight, BMI, circumferences</div>
+      </div>
+      <div class="prefix-chip" data-prefix="bpx">
+        <div class="pcode">BPX</div>
+        <div class="pdesc">Blood pressure readings — systolic and diastolic</div>
+      </div>
+      <div class="prefix-chip" data-prefix="lbx">
+        <div class="pcode">LBX</div>
+        <div class="pdesc">Lab values — blood chemistry, measured directly</div>
+      </div>
+      <div class="prefix-chip" data-prefix="urx">
+        <div class="pcode">URX</div>
+        <div class="pdesc">Urine measurements — creatinine, heavy metals, chemicals</div>
+      </div>
+      <div class="prefix-chip" data-prefix="dmd">
+        <div class="pcode">DMD</div>
+        <div class="pdesc">Demographic detail — education, marital status, household</div>
+      </div>
+      <div class="prefix-chip" data-prefix="rid">
+        <div class="pcode">RID</div>
+        <div class="pdesc">Identity — age, race, interview status</div>
+      </div>
+      <div class="prefix-chip" data-prefix="diq">
+        <div class="pcode">DIQ</div>
+        <div class="pdesc">Diabetes questionnaire — diagnosis, medications</div>
+      </div>
+      <div class="prefix-chip" data-prefix="smq">
+        <div class="pcode">SMQ</div>
+        <div class="pdesc">Smoking questionnaire — ever, current, frequency</div>
+      </div>
+      <div class="prefix-chip" data-prefix="mcq">
+        <div class="pcode">MCQ</div>
+        <div class="pdesc">Medical conditions — history of cancer, arthritis, asthma</div>
+      </div>
+      <div class="prefix-chip" data-prefix="wt">
+        <div class="pcode">WT</div>
+        <div class="pdesc">Survey weights — do not ignore these</div>
+      </div>
+    </div>
+    <div class="prefix-detail" id="prefix-detail"></div>
+  </div>
+</section>
+
+<!-- ── Section 4: Joining ───────────────────────────────── -->
+<section id="merge">
+  <div class="reading">
+    <div class="section-num">§ 04</div>
+    <h2 class="section-title">Assembly is <em>your job</em>, not CDC's.</h2>
+    <p class="section-intro">The CDC publishes the files separately, by design. If your question is "does income level affect blood pressure," you pull the demographics file and the blood pressure file — and nothing else. You join them on SEQN, and you have your dataset.</p>
+  </div>
+
+  <div class="wrap">
+    <div class="merge-demo">
+      <div class="merge-files">
+        <div class="merge-file">
+          <div class="merge-file-name">DEMO_J</div>
+          <table>
+            <tr><th>SEQN</th><th>Gender</th><th>Age</th></tr>
+            <tr><td class="seqn">93703</td><td>M</td><td>23</td></tr>
+            <tr><td class="seqn">93704</td><td>F</td><td>54</td></tr>
+            <tr><td class="seqn">93705</td><td>M</td><td>3</td></tr>
+            <tr><td class="seqn">93706</td><td>M</td><td>31</td></tr>
+          </table>
+        </div>
+        <div class="merge-file">
+          <div class="merge-file-name">BMX_J</div>
+          <table>
+            <tr><th>SEQN</th><th>Weight</th><th>BMI</th></tr>
+            <tr><td class="seqn">93703</td><td>91.4</td><td>18.4</td></tr>
+            <tr><td class="seqn">93704</td><td>91.5</td><td>20.7</td></tr>
+            <tr><td class="seqn">93705</td><td>81.3</td><td>42.1</td></tr>
+            <tr><td class="seqn">93706</td><td>34.5</td><td>33.6</td></tr>
+          </table>
+        </div>
+        <div class="merge-file">
+          <div class="merge-file-name">BPX_J</div>
+          <table>
+            <tr><th>SEQN</th><th>Sys</th><th>Dia</th></tr>
+            <tr><td class="seqn">93703</td><td>118</td><td>72</td></tr>
+            <tr><td class="seqn">93704</td><td>142</td><td>88</td></tr>
+            <tr><td class="seqn">93705</td><td>—</td><td>—</td></tr>
+            <tr><td class="seqn">93706</td><td>126</td><td>78</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="merge-arrow">joined on SEQN ↓</div>
+      <div class="merge-result">
+        <div class="merge-result-name">merged_df — one row per person</div>
+        <table>
+          <tr><th>SEQN</th><th>Gender</th><th>Age</th><th>Weight</th><th>BMI</th><th>Systolic</th><th>Diastolic</th></tr>
+          <tr><td class="seqn">93703</td><td>M</td><td>23</td><td>91.4</td><td>18.4</td><td>118</td><td>72</td></tr>
+          <tr><td class="seqn">93704</td><td>F</td><td>54</td><td>91.5</td><td>20.7</td><td>142</td><td>88</td></tr>
+          <tr><td class="seqn">93705</td><td>M</td><td>3</td><td>81.3</td><td>42.1</td><td>—</td><td>—</td></tr>
+          <tr><td class="seqn">93706</td><td>M</td><td>31</td><td>34.5</td><td>33.6</td><td>126</td><td>78</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="reading" style="padding: 0;">
+      <p style="margin-top: var(--s-5);">Notice SEQN 93705 — a three-year-old. Blood pressure is empty not because the data is bad, but because NHANES doesn't measure BP in children. The emptiness itself is informative. More on this in section 06.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── Section 5: Sample data ──────────────────────────── -->
+<section id="data">
+  <div class="reading">
+    <div class="section-num">§ 05</div>
+    <h2 class="section-title">What the data <em>actually looks like</em>, raw and refined.</h2>
+    <p class="section-intro">Before you start analyzing, a choice confronts you: do you work with the raw numeric codes the CDC publishes, or do you decode them against the codebook first? Both views have their uses. Switch between them below.</p>
+  </div>
+
+  <div class="wrap">
+    <div class="data-view-tabs">
+      <div class="dv-tab active" data-dv="raw">Raw (.xpt as downloaded)</div>
+      <div class="dv-tab" data-dv="decoded">Decoded (codebook applied)</div>
+      <div class="dv-tab" data-dv="codebook">The codebook itself</div>
+    </div>
+
+    <div class="dv-panel active" id="dv-raw">
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr><th>SEQN</th><th>RIAGENDR</th><th>RIDAGEYR</th><th>RIDRETH1</th><th>DMDEDUC2</th><th>INDFMPIR</th><th>BMXBMI</th><th>BPXSY1</th><th>LBXGLU</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="seqn">93703</td><td class="coded">1</td><td class="number">23</td><td class="coded">3</td><td class="coded">4</td><td class="number">1.86</td><td class="number">18.44</td><td class="number">118</td><td class="number">94</td></tr>
+            <tr><td class="seqn">93704</td><td class="coded">2</td><td class="number">54</td><td class="coded">4</td><td class="coded">2</td><td class="number">0.67</td><td class="number">20.69</td><td class="number">142</td><td class="number">112</td></tr>
+            <tr><td class="seqn">93705</td><td class="coded">1</td><td class="number">3</td><td class="coded">4</td><td class="missing">.</td><td class="number">4.33</td><td class="number">16.20</td><td class="missing">.</td><td class="missing">.</td></tr>
+            <tr><td class="seqn">93706</td><td class="coded">1</td><td class="number">31</td><td class="coded">1</td><td class="missing">.</td><td class="number">3.15</td><td class="number">23.80</td><td class="number">126</td><td class="number">98</td></tr>
+            <tr><td class="seqn">93707</td><td class="coded">1</td><td class="number">39</td><td class="coded">3</td><td class="coded">4</td><td class="number">1.72</td><td class="number">27.10</td><td class="number">132</td><td class="number">104</td></tr>
+            <tr><td class="seqn">93708</td><td class="coded">2</td><td class="number">67</td><td class="coded">5</td><td class="coded">5</td><td class="number">4.98</td><td class="number">29.30</td><td class="number">156</td><td class="number">138</td></tr>
+            <tr><td class="seqn">93709</td><td class="coded">1</td><td class="number">12</td><td class="coded">2</td><td class="missing">.</td><td class="number">2.10</td><td class="number">19.40</td><td class="missing">.</td><td class="number">88</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size: var(--t-sm); color: var(--text-faint); margin-top: var(--s-3);">Orange cells are <strong style="color: var(--warm);">coded categorical values</strong> — numbers you cannot read without the codebook. Dots are missing values.</p>
+    </div>
+
+    <div class="dv-panel" id="dv-decoded">
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr><th>SEQN</th><th>Gender</th><th>Age</th><th>Race</th><th>Education</th><th>Income ratio</th><th>BMI</th><th>Sys BP</th><th>Glucose</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="seqn">93703</td><td class="decoded">Male</td><td class="number">23</td><td class="decoded">NH White</td><td class="decoded">Some college</td><td class="number">1.86</td><td class="number">18.44</td><td class="number">118</td><td class="number">94</td></tr>
+            <tr><td class="seqn">93704</td><td class="decoded">Female</td><td class="number">54</td><td class="decoded">NH Black</td><td class="decoded">9–11th grade</td><td class="number">0.67</td><td class="number">20.69</td><td class="number">142</td><td class="number">112</td></tr>
+            <tr><td class="seqn">93705</td><td class="decoded">Male</td><td class="number">3</td><td class="decoded">NH Black</td><td class="missing">Not applicable (child)</td><td class="number">4.33</td><td class="number">16.20</td><td class="missing">Not measured</td><td class="missing">Not measured</td></tr>
+            <tr><td class="seqn">93706</td><td class="decoded">Male</td><td class="number">31</td><td class="decoded">Mexican American</td><td class="missing">Refused</td><td class="number">3.15</td><td class="number">23.80</td><td class="number">126</td><td class="number">98</td></tr>
+            <tr><td class="seqn">93707</td><td class="decoded">Male</td><td class="number">39</td><td class="decoded">NH White</td><td class="decoded">Some college</td><td class="number">1.72</td><td class="number">27.10</td><td class="number">132</td><td class="number">104</td></tr>
+            <tr><td class="seqn">93708</td><td class="decoded">Female</td><td class="number">67</td><td class="decoded">Other/Multi</td><td class="decoded">College grad</td><td class="number">4.98</td><td class="number">29.30</td><td class="number">156</td><td class="number">138</td></tr>
+            <tr><td class="seqn">93709</td><td class="decoded">Male</td><td class="number">12</td><td class="decoded">Other Hispanic</td><td class="missing">Not applicable (child)</td><td class="number">2.10</td><td class="number">19.40</td><td class="missing">Not measured</td><td class="number">88</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size: var(--t-sm); color: var(--text-faint); margin-top: var(--s-3);">Green cells show the same data after looking up each coded value in the codebook. Now the table is readable — and you can see that SEQN 93704 is a 54-year-old woman with stage-2 hypertension and type-2 diabetes.</p>
+    </div>
+
+    <div class="dv-panel" id="dv-codebook">
+      <p style="font-size: var(--t-sm); color: var(--text-dim); margin-bottom: var(--s-4);">The codebook is what transforms column one above into column two. Here are three representative entries.</p>
+      <div class="data-table-wrap" style="padding: var(--s-5) var(--s-6);">
+        <div style="display: grid; gap: var(--s-5);">
+          <div style="border-left: 3px solid var(--accent-600); padding-left: var(--s-4);">
+            <div style="font-family: var(--f-mono); font-weight: 500; color: var(--accent-600); font-size: var(--t-md); margin-bottom: var(--s-1);">RIAGENDR</div>
+            <div style="font-size: var(--t-sm); color: var(--text); margin-bottom: var(--s-2);">Gender of the sample person</div>
+            <div style="display: flex; gap: var(--s-3); flex-wrap: wrap; font-size: 12px; font-family: var(--f-mono);">
+              <span style="background: var(--bg-sunken); padding: 2px 8px; border-radius: 3px;"><span style="color: var(--accent-600); font-weight: 500;">1</span> → Male</span>
+              <span style="background: var(--bg-sunken); padding: 2px 8px; border-radius: 3px;"><span style="color: var(--accent-600); font-weight: 500;">2</span> → Female</span>
+            </div>
+          </div>
+          <div style="border-left: 3px solid var(--accent-600); padding-left: var(--s-4);">
+            <div style="font-family: var(--f-mono); font-weight: 500; color: var(--accent-600); font-size: var(--t-md); margin-bottom: var(--s-1);">DMDEDUC2</div>
+            <div style="font-size: var(--t-sm); color: var(--text); margin-bottom: var(--s-2);">Education level — adults 20+ only</div>
+            <div style="display: flex; gap: var(--s-2); flex-wrap: wrap; font-size: 12px; font-family: var(--f-mono);">
+              <span style="background: var(--bg-sunken); padding: 2px 8px; border-radius: 3px;"><span style="color: var(--accent-600); font-weight: 500;">1</span> → &lt; 9th grade</span>
+              <span style="background: var(--bg-sunken); padding: 2px 8px; border-radius: 3px;"><span style="color: var(--accent-600); font-weight: 500;">2</span> → 9–11th grade</span>
+              <span style="background: var(--bg-sunken); padding: 2px 8px; border-radius: 3px;"><span style="color: var(--accent-600); font-weight: 500;">3</span> → High school</span>
+              <span style="background: var(--bg-sunken); padding: 2px 8px; border-radius: 3px;"><span style="color: var(--accent-600); font-weight: 500;">4</span> → Some college</span>
+              <span style="background: var(--bg-sunken); padding: 2px 8px; border-radius: 3px;"><span style="color: var(--accent-600); font-weight: 500;">5</span> → College grad+</span>
+              <span style="background: var(--warm-bg); padding: 2px 8px; border-radius: 3px; color: var(--warm);"><span style="font-weight: 500;">7</span> → Refused</span>
+              <span style="background: var(--warm-bg); padding: 2px 8px; border-radius: 3px; color: var(--warm);"><span style="font-weight: 500;">9</span> → Don't know</span>
+            </div>
+            <p style="font-size: var(--t-xs); color: var(--warm); margin-top: var(--s-2); font-style: italic;">Note: 7 and 9 are <strong>not</strong> missing in the raw file. They look like real data but mean "no answer." If you forget to recode these, every statistic you compute on education will be wrong.</p>
+          </div>
+          <div style="border-left: 3px solid var(--accent-600); padding-left: var(--s-4);">
+            <div style="font-family: var(--f-mono); font-weight: 500; color: var(--accent-600); font-size: var(--t-md); margin-bottom: var(--s-1);">RIDAGEYR</div>
+            <div style="font-size: var(--t-sm); color: var(--text); margin-bottom: var(--s-2);">Age in years at screening</div>
+            <div style="font-size: var(--t-sm); color: var(--text-dim);">Continuous · range 0–80 · <strong style="color: var(--warm);">ages &gt; 80 are top-coded to 80</strong> for privacy. In early cycles the cap was 85.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="warning-callout" style="margin-top: var(--s-7);">
+      <div class="wc-label">Clinical-analogy warning</div>
+      <h4>The "77 / 99 trap" is the radiology-equivalent of trusting a report without looking at the window settings.</h4>
+      <p>In many NHANES variables, the value <strong>7 or 77</strong> means "refused," <strong>9 or 99</strong> means "don't know," and these look identical to real answers. Forget to recode them as missing, and your average household income silently includes "99" in the arithmetic.</p>
+      <p style="margin-bottom: 0;">This is the single most common beginner mistake. The cleaning layer of your course will drill it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── Section 6: Missingness ───────────────────────────── -->
+<section id="missing">
+  <div class="reading">
+    <div class="section-num">§ 06</div>
+    <h2 class="section-title">Empty cells are <em>data</em>, not gaps.</h2>
+    <p class="section-intro">You're used to this from imaging reports: a missing measurement is never meaningless. Someone chose not to measure, or couldn't. NHANES has a small number of distinct reasons for missingness, and each has a different correct response.</p>
+  </div>
+
+  <div class="wrap">
+    <div class="missing-grid">
+      <div class="concept-card">
+        <div class="cc-num">01 · STRUCTURAL</div>
+        <h4>Not applicable by design</h4>
+        <p>A three-year-old has no marital status. A man has no prostate-specific questionnaire skip logic applied. These cells are empty because the question was never asked. <strong style="color: var(--text);">Don't impute — subset your analysis appropriately.</strong></p>
+      </div>
+      <div class="concept-card">
+        <div class="cc-num">02 · BEHAVIORAL</div>
+        <h4>Refused or don't know</h4>
+        <p>Coded as <span class="code-hint" style="font-family: var(--f-mono); background: var(--warm-bg); color: var(--warm); padding: 2px 6px; border-radius: 3px; font-size: 11px;">7, 77, 777</span> or <span class="code-hint" style="font-family: var(--f-mono); background: var(--warm-bg); color: var(--warm); padding: 2px 6px; border-radius: 3px; font-size: 11px;">9, 99, 999</span>. These look like real numbers but are not. <strong style="color: var(--text);">Always recode to missing before analysis.</strong></p>
+      </div>
+      <div class="concept-card">
+        <div class="cc-num">03 · OPERATIONAL</div>
+        <h4>Exam not completed</h4>
+        <p>Participant left the exam trailer early; equipment malfunctioned; lab sample inadequate. NHANES flags these in a companion status column (e.g. <code style="font-family: var(--f-mono); font-size: 12px;">BMDSTATS</code>). <strong style="color: var(--text);">Always inspect the status variable.</strong></p>
+      </div>
+      <div class="concept-card">
+        <div class="cc-num">04 · ANALYTICAL</div>
+        <h4>Below detection limit</h4>
+        <p>Common in environmental chemistry — the assay couldn't see the chemical because concentration was too low. Flagged in a paired <code style="font-family: var(--f-mono); font-size: 12px;">LC</code> column. Standard practice: <strong style="color: var(--text);">substitute limit ÷ √2</strong> rather than drop.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Section 7: Volumetrics ───────────────────────────── -->
+<section id="volumetrics">
+  <div class="reading">
+    <div class="section-num">§ 07</div>
+    <h2 class="section-title">One cycle, <em>fifty thousand</em> measurements.</h2>
+    <p class="section-intro">Here's the rough anatomy of what a single two-year cycle contains. You'll work almost entirely with demographics plus a handful of topical files — never the full set.</p>
+  </div>
+
+  <div class="wrap">
+    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--r-lg); padding: var(--s-6);">
+      <div class="volumetric-row">
+        <div class="v-name">Demographics</div>
+        <div class="v-bar"><div class="v-bar-fill" style="width: 4%; background: var(--accent-400);"></div></div>
+        <div class="v-count">4 files · 46 vars</div>
+      </div>
+      <div class="volumetric-row">
+        <div class="v-name">Examination</div>
+        <div class="v-bar"><div class="v-bar-fill" style="width: 18%; background: var(--accent-400);"></div></div>
+        <div class="v-count">19 files · 240 vars</div>
+      </div>
+      <div class="volumetric-row">
+        <div class="v-name">Laboratory</div>
+        <div class="v-bar"><div class="v-bar-fill" style="width: 70%; background: var(--accent-400);"></div></div>
+        <div class="v-count">163 files · 920 vars</div>
+      </div>
+      <div class="volumetric-row">
+        <div class="v-name">Questionnaire</div>
+        <div class="v-bar"><div class="v-bar-fill" style="width: 48%; background: var(--accent-400);"></div></div>
+        <div class="v-count">69 files · 630 vars</div>
+      </div>
+      <div class="volumetric-row">
+        <div class="v-name">Dietary</div>
+        <div class="v-bar"><div class="v-bar-fill" style="width: 24%; background: var(--accent-400);"></div></div>
+        <div class="v-count">12 files · 320 vars</div>
+      </div>
+    </div>
+    <p style="font-size: var(--t-sm); color: var(--text-faint); margin-top: var(--s-4); text-align: center;">Counts are approximate and vary slightly per cycle. The laboratory module dominates because each chemical or biomarker gets its own file.</p>
+  </div>
+</section>
+
+<!-- ── Section 8: Takeaways ─────────────────────────────── -->
+<section id="takeaways">
+  <div class="reading">
+    <div class="section-num">§ 08</div>
+    <h2 class="section-title">What to carry into <em>session one</em>.</h2>
+    <p class="section-intro">You don't need to memorize any of the file names or codes. But a handful of mental models, carried in, will let you move quickly once the course begins.</p>
+  </div>
+
+  <div class="wrap">
+    <div class="concept-grid">
+      <div class="concept-card">
+        <div class="cc-num">KEEP IN MIND</div>
+        <h4>Everything pivots on SEQN</h4>
+        <p>It is the participant ID. Every merge, every filter, every subset happens through it. If you're ever confused about why a join produced too many or too few rows, come back to SEQN first.</p>
+      </div>
+      <div class="concept-card">
+        <div class="cc-num">KEEP IN MIND</div>
+        <h4>Raw is in codes, meaning is in the codebook</h4>
+        <p>You will never do analysis on the raw numeric codes directly. First you read the codebook for every variable you use; then you decide what to recode; only then does analysis begin.</p>
+      </div>
+      <div class="concept-card">
+        <div class="cc-num">KEEP IN MIND</div>
+        <h4>Missingness has a reason</h4>
+        <p>Before you drop rows or impute values, ask why the cell is empty. The course will teach you to read the status columns that NHANES always ships alongside measurements.</p>
+      </div>
+      <div class="concept-card">
+        <div class="cc-num">KEEP IN MIND</div>
+        <h4>Files are topical, not monolithic</h4>
+        <p>You'll never download "NHANES." You'll download the three or four files your question needs and assemble them on SEQN. This is modular by design, and you'll appreciate it by session four.</p>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: var(--s-8); padding-top: var(--s-7); border-top: 1px solid var(--border);">
+      <p style="font-family: var(--f-display); font-size: var(--t-xl); font-style: italic; color: var(--text-dim); max-width: 540px; margin: 0 auto; line-height: 1.45;">Everything in this pre-read will reappear in the course, hands-on — with code, with real files, and with your own research question.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Prepared as pre-reading for the <em>Applied Data Analysis Track</em> · Sanketana School of Code</p>
+  </div>
+</footer>
+
+<script>
+// ── File browser data ───────────────────────────────────────
+const files = {
+  demo: {
+    title: "DEMO_J — Demographics",
+    sub: "One row per participant. Assembled from the household screener, in-home interview, and mobile exam. Contains the survey-design variables you'll need for every serious analysis.",
+    stats: { rows: "9,254", cols: "46", family: "Demographics" },
+    vars: [
+      ["SEQN", "Respondent sequence number — the merge key"],
+      ["RIAGENDR", "Gender (coded 1/2)"],
+      ["RIDAGEYR", "Age in years, top-coded at 80"],
+      ["RIDRETH1", "Race / Hispanic origin (1–5)"],
+      ["DMDEDUC2", "Education, adults 20+ only"],
+      ["DMDMARTL", "Marital status, adults 20+"],
+      ["INDFMPIR", "Ratio of family income to poverty, 0.00–5.00"],
+      ["WTMEC2YR", "Full-sample 2-year MEC weight"],
+      ["SDMVPSU", "Primary sampling unit (for variance)"],
+      ["SDMVSTRA", "Sampling stratum"]
+    ]
+  },
+  bmx: {
+    title: "BMX_J — Body Measurements",
+    sub: "Anthropometry collected in the mobile exam centre. Height, weight, circumferences — all measured, not self-reported.",
+    stats: { rows: "8,704", cols: "21", family: "Examination" },
+    vars: [
+      ["SEQN", "Merge key"],
+      ["BMDSTATS", "Body measures component status — inspect before using values"],
+      ["BMXWT", "Weight, kg"],
+      ["BMXHT", "Standing height, cm"],
+      ["BMXBMI", "Body mass index, kg/m²"],
+      ["BMXWAIST", "Waist circumference, cm"],
+      ["BMXHIP", "Hip circumference, cm"],
+      ["BMXARMC", "Upper arm circumference, cm"],
+      ["BMXLEG", "Upper leg length, cm"]
+    ]
+  },
+  bpx: {
+    title: "BPX_J — Blood Pressure",
+    sub: "Up to four sequential BP readings taken by a trained examiner. Separate systolic and diastolic columns. Children are not measured; expect missing values in young rows.",
+    stats: { rows: "8,704", cols: "22", family: "Examination" },
+    vars: [
+      ["SEQN", "Merge key"],
+      ["BPXSY1", "Systolic BP, reading 1"],
+      ["BPXDI1", "Diastolic BP, reading 1"],
+      ["BPXSY2", "Systolic BP, reading 2"],
+      ["BPXDI2", "Diastolic BP, reading 2"],
+      ["BPXSY3", "Systolic BP, reading 3"],
+      ["BPXDI3", "Diastolic BP, reading 3"],
+      ["BPXPULS", "Pulse regular / irregular"],
+      ["BPAARM", "Arm selected for BP"],
+      ["BPXCHR", "Pulse rate, 60-second count"]
+    ]
+  },
+  trigly: {
+    title: "TRIGLY_J — Triglycerides & LDL",
+    sub: "Lipid panel from fasting blood draw, run by a contracted laboratory. Triglycerides and LDL are calculated, not measured directly; check the derived columns.",
+    stats: { rows: "3,036", cols: "8", family: "Laboratory" },
+    vars: [
+      ["SEQN", "Merge key"],
+      ["LBXTR", "Triglycerides, mg/dL"],
+      ["LBDTRSI", "Triglycerides in SI units, mmol/L"],
+      ["LBDLDL", "LDL cholesterol, mg/dL (calculated)"],
+      ["LBDLDLSI", "LDL in SI units"],
+      ["WTSAF2YR", "Fasting subsample weight — use this instead of WTMEC2YR"]
+    ]
+  },
+  glu: {
+    title: "GLU_J — Plasma Fasting Glucose",
+    sub: "Fasting plasma glucose from the morning MEC exam. Only administered to a fasting subsample — rows are fewer than DEMO.",
+    stats: { rows: "3,036", cols: "6", family: "Laboratory" },
+    vars: [
+      ["SEQN", "Merge key"],
+      ["LBXGLU", "Fasting glucose, mg/dL"],
+      ["LBDGLUSI", "Fasting glucose, mmol/L"],
+      ["WTSAF2YR", "Fasting subsample weight"],
+      ["PHAFSTHR", "Hours fasted before draw"],
+      ["PHAFSTMN", "Minutes fasted before draw (complements hours)"]
+    ]
+  },
+  diq: {
+    title: "DIQ_J — Diabetes Questionnaire",
+    sub: "Self-reported diagnosis, treatment, and family history of diabetes. Cross-check against lab glucose for undiagnosed cases — a classic NHANES analysis.",
+    stats: { rows: "8,366", cols: "60", family: "Questionnaire" },
+    vars: [
+      ["SEQN", "Merge key"],
+      ["DIQ010", "Doctor told you have diabetes (1=Yes, 2=No, 3=Borderline, 7=Refused, 9=Don't know)"],
+      ["DID040", "Age when first told"],
+      ["DIQ050", "Taking insulin now"],
+      ["DIQ070", "Taking oral hypoglycemic"],
+      ["DIQ160", "Ever told you have prediabetes"],
+      ["DIQ170", "Ever told at risk for diabetes"],
+      ["DIQ175A", "Risk factor: family history"]
+    ]
+  },
+  smq: {
+    title: "SMQ_J — Smoking — Cigarette Use",
+    sub: "Lifetime smoking history. Often combined with lab measures of cotinine (serum) to validate self-report.",
+    stats: { rows: "5,856", cols: "32", family: "Questionnaire" },
+    vars: [
+      ["SEQN", "Merge key"],
+      ["SMQ020", "Smoked at least 100 cigarettes in life"],
+      ["SMD030", "Age started smoking regularly"],
+      ["SMQ040", "Do you now smoke cigarettes"],
+      ["SMD055", "Age last smoked cigarettes regularly"],
+      ["SMD641", "Days smoked in last 30 days"],
+      ["SMD650", "Average cigarettes/day on days smoked"]
+    ]
+  },
+  drx: {
+    title: "DR1TOT_J — Day 1 Dietary Recall",
+    sub: "Total nutrient intake for day 1 of a 24-hour recall. A highly complex file — dietary analysis has its own conventions (calories, macros, specific nutrients) that the course covers separately.",
+    stats: { rows: "7,435", cols: "168", family: "Dietary" },
+    vars: [
+      ["SEQN", "Merge key"],
+      ["DR1TKCAL", "Energy (kcal)"],
+      ["DR1TPROT", "Protein (g)"],
+      ["DR1TCARB", "Carbohydrate (g)"],
+      ["DR1TSUGR", "Total sugars (g)"],
+      ["DR1TFIBE", "Dietary fiber (g)"],
+      ["DR1TTFAT", "Total fat (g)"],
+      ["DR1TSFAT", "Saturated fatty acids (g)"],
+      ["DR1TSODI", "Sodium (mg)"]
+    ]
+  }
+};
+
+// Render initial file detail
+function renderFile(key) {
+  const f = files[key];
+  const el = document.getElementById('file-detail');
+  el.innerHTML = `
+    <div class="file-detail-header">
+      <div class="file-detail-title">${f.title}</div>
+      <div class="file-detail-sub">${f.sub}</div>
+    </div>
+    <div class="file-detail-stats">
+      <div class="fds">Rows<strong>${f.stats.rows}</strong></div>
+      <div class="fds">Columns<strong>${f.stats.cols}</strong></div>
+      <div class="fds">Family<strong>${f.stats.family}</strong></div>
+    </div>
+    <div class="file-vars">
+      ${f.vars.map(v => `<div class="var-row"><div class="var-code">${v[0]}</div><div class="var-label">${v[1]}</div></div>`).join('')}
+    </div>
+  `;
+}
+
+document.querySelectorAll('.file-item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.file-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    renderFile(item.dataset.file);
+  });
+});
+renderFile('demo');
+
+// ── Tabs ────────────────────────────────────────────────────
+document.querySelectorAll('.dv-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.dv-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.dv-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('dv-' + tab.dataset.dv).classList.add('active');
+  });
+});
+
+// ── Prefix explorer ─────────────────────────────────────────
+const prefixData = {
+  bmx: { name: "Body Measures Examination", examples: [["BMXWT", "Weight (kg)"], ["BMXHT", "Standing height (cm)"], ["BMXBMI", "Body mass index"], ["BMXWAIST", "Waist circumference"], ["BMXHIP", "Hip circumference"], ["BMXARMC", "Arm circumference"]] },
+  bpx: { name: "Blood Pressure Examination", examples: [["BPXSY1", "Systolic, reading 1"], ["BPXDI1", "Diastolic, reading 1"], ["BPXSY2", "Systolic, reading 2"], ["BPXPULS", "Pulse regularity"], ["BPAARM", "Arm used"], ["BPXCHR", "60-sec pulse rate"]] },
+  lbx: { name: "Laboratory — actual eXamination result", examples: [["LBXGLU", "Fasting glucose"], ["LBXTR", "Triglycerides"], ["LBXHGB", "Hemoglobin"], ["LBXBCD", "Blood cadmium"], ["LBXCOT", "Serum cotinine"], ["LBXTSH", "Thyroid-stimulating hormone"]] },
+  urx: { name: "URine — eXamination result", examples: [["URXUCR", "Urine creatinine"], ["URXBPH", "Urinary BPA"], ["URXUHG", "Urinary mercury"], ["URXUAS", "Urinary arsenic"], ["URXMBP", "Urinary phthalate"], ["URXALB", "Urinary albumin"]] },
+  dmd: { name: "DeMographic Detail", examples: [["DMDEDUC2", "Education, adults 20+"], ["DMDMARTL", "Marital status"], ["DMDHHSIZ", "Household size"], ["DMDFMSIZ", "Family size"], ["DMDCITZN", "Citizenship status"], ["DMDYRSUS", "Years lived in US"]] },
+  rid: { name: "Research Interview — Demographic", examples: [["RIDAGEYR", "Age in years"], ["RIDAGEMN", "Age in months (children)"], ["RIDRETH1", "Race/Hispanic origin"], ["RIDRETH3", "Race (expanded, incl. Asian)"], ["RIDSTATR", "Interview/exam status"], ["RIAGENDR", "Gender"]] },
+  diq: { name: "DIabetes Questionnaire", examples: [["DIQ010", "Doctor said you have diabetes"], ["DID040", "Age first told"], ["DIQ050", "Taking insulin"], ["DIQ070", "Taking oral meds"], ["DIQ160", "Prediabetes diagnosis"], ["DIQ175A", "Family history risk factor"]] },
+  smq: { name: "SMoking Questionnaire", examples: [["SMQ020", "Smoked ≥100 cigarettes ever"], ["SMQ040", "Current smoker"], ["SMD030", "Age started regularly"], ["SMD641", "Days smoked in last 30"], ["SMD650", "Cigs/day on smoking days"], ["SMQ078", "Age quit smoking"]] },
+  mcq: { name: "Medical Conditions Questionnaire", examples: [["MCQ010", "Ever told have asthma"], ["MCQ160A", "Ever told have arthritis"], ["MCQ160C", "Ever told have CHD"], ["MCQ160F", "Ever told have stroke"], ["MCQ220", "Ever told have cancer"], ["MCQ230A", "Cancer type — first"]] },
+  wt: { name: "Weight (survey / sample weights)", examples: [["WTINT2YR", "2-yr interview weight"], ["WTMEC2YR", "2-yr MEC exam weight"], ["WTSAF2YR", "2-yr fasting subsample weight"], ["WTDRD1", "Day-1 dietary weight"], ["WTDR2D", "Two-day dietary weight"], ["SDMVPSU", "PSU — companion variable"]] }
+};
+
+document.querySelectorAll('.prefix-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const key = chip.dataset.prefix;
+    document.querySelectorAll('.prefix-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    const d = prefixData[key];
+    const el = document.getElementById('prefix-detail');
+    el.innerHTML = `
+      <h5>${key.toUpperCase()} — ${d.name}</h5>
+      <div class="examples">
+        ${d.examples.map(e => `<div>${e[0]}<span>${e[1]}</span></div>`).join('')}
+      </div>
+    `;
+    el.classList.add('show');
+  });
+});
+
+// ── Animate volumetric bars on scroll-in ────────────────────
+const vbars = document.querySelectorAll('.v-bar-fill');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      // Just trigger the CSS transition by keeping current width
+      // (widths are already set inline; this is just to confirm animation plays when visible)
+      entry.target.style.transition = 'width 1.2s cubic-bezier(0.22, 1, 0.36, 1)';
+    }
+  });
+}, { threshold: 0.2 });
+vbars.forEach(b => {
+  const final = b.style.width;
+  b.style.width = '0%';
+  setTimeout(() => {
+    observer.observe(b);
+    setTimeout(() => { b.style.width = final; }, 100);
+  }, 200);
+});
+</script>
+
+</body>
+</html>
