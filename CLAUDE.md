@@ -6,7 +6,7 @@
 
 ## What this repo is
 
-A curriculum repository for **Sanketana School of Code's Applied Data Analysis Track** — a 16-session, 1-hour-per-session, 1:1 or 1:2 live-instructed program that takes a beginner with no Python background to producing a research-grade mini-analysis on NHANES (CDC's National Health and Nutrition Examination Survey) data.
+A curriculum repository for **Sanketana School of Code's Applied Data Analysis Track** — a 16-session, 1-hour-per-session, 1:2 live-instructed program that takes a beginner with no Python background to producing a research-grade mini-analysis on NHANES (CDC's National Health and Nutrition Examination Survey) data.
 
 **Primary audience of this repo:** curriculum designers and instructors (Sanketana staff).
 **Not for learners.** Learners interact with the track through their own Google Drive folder — files from this repo get copied into their folder weekly.
@@ -16,12 +16,15 @@ A curriculum repository for **Sanketana School of Code's Applied Data Analysis T
 ## Track design (immutable — don't deviate without explicit confirmation)
 
 ### Who it's for
+
 - Adult or motivated high-school learners with **zero to minimal Python background**
 - Learners who want to use data analysis for **health research** (their own, or to mentor students doing research projects)
 - Learners who value **depth over breadth** — would rather master a narrow workflow than skim many tools
 
 ### What success looks like (Section 3 of the brief)
+
 By end of Session 16, the learner can **independently**:
+
 1. Download an NHANES cycle (demographics, labs, questionnaires, examinations)
 2. Load XPT/SAS-format files into Python
 3. Merge datasets correctly using SEQN (respondent ID)
@@ -33,12 +36,14 @@ By end of Session 16, the learner can **independently**:
 The final deliverable per learner is a **mini-research project**, not a set of code exercises.
 
 ### Curriculum phases
+
 - **Phase 1 (S1–5):** Python for Data — variables, lists/dicts, control flow, functions, CSV basics
 - **Phase 2 (S6–9):** Pandas + NHANES — download, read XPT, merge on SEQN, missing data handling
 - **Phase 3 (S10–12):** Visualization & descriptive statistics — matplotlib, seaborn, research-grade charts
 - **Phase 4 (S13–16):** Applied research — reinforcement + guided mini-project
 
 ### Out of scope (do NOT drift into these)
+
 - Inferential statistics (t-tests, ANOVA, regression beyond descriptive)
 - Survey-weighted analysis (NHANES's complex sampling design — explicitly set aside)
 - Machine learning
@@ -54,6 +59,7 @@ If a learner asks about these, the instructor acknowledges and redirects. Sessio
 ## Pedagogical framework (agreed — don't reinvent)
 
 ### Weekly loop
+
 Every session sits inside this 7-day cycle:
 
 1. **Pre-read** (2 days before class, ~30–45 min) — learner alone. Ends with 3 self-check questions.
@@ -66,20 +72,22 @@ Total learner time per week: ~1 hr class + 3–4 hrs outside. The ratio is delib
 
 ### Live session structure (60 min, same every time)
 
-| Block | Time | What happens | Mode |
-|---|---|---|---|
-| **A. Warm-up & homework review** | 0:00–0:10 | Learner walks through their homework. "Where did you get stuck?" | Learner-led, instructor listens |
-| **B. Concept bridge** | 0:10–0:20 | Instructor live-codes a realistic example of today's new concept. Syntax already covered in pre-read. | Instructor-led live coding |
-| **C. Guided hands-on** | 0:20–0:40 | **Learner drives the keyboard.** Instructor asks Socratic questions. | Learner-driven |
-| **D. Stretch / stall-point** | 0:40–0:55 | Deliberately engineered pitfall. Collaborative debugging. | Collaborative |
-| **E. Wrap & next steps** | 0:55–1:00 | Save, set homework, preview next session. | Instructor-led |
+| Block                            | Time      | What happens                                                                                          | Mode                            |
+| -------------------------------- | --------- | ----------------------------------------------------------------------------------------------------- | ------------------------------- |
+| **A. Warm-up & homework review** | 0:00–0:10 | Learner walks through their homework. "Where did you get stuck?"                                      | Learner-led, instructor listens |
+| **B. Concept bridge**            | 0:10–0:20 | Instructor live-codes a realistic example of today's new concept. Syntax already covered in pre-read. | Instructor-led live coding      |
+| **C. Guided hands-on**           | 0:20–0:40 | **Learner drives the keyboard.** Instructor asks Socratic questions.                                  | Learner-driven                  |
+| **D. Stretch / stall-point**     | 0:40–0:55 | Deliberately engineered pitfall. Collaborative debugging.                                             | Collaborative                   |
+| **E. Wrap & next steps**         | 0:55–1:00 | Save, set homework, preview next session.                                                             | Instructor-led                  |
 
 **Non-negotiables:**
+
 - Block C must be ~20 minutes of learner-at-keyboard. Instructor talks <20% of session total.
 - Block D must exist in every session. The stall point is pedagogically designed, not incidental.
 - If pre-read is skipped, Block B lengthens; if still running short, cut Block D before Block C.
 
 ### Three delivery modes & when to use each
+
 - **Guided hands-on (~70%)** — default for Block C. Learner drives.
 - **Live coding by instructor (~20%)** — Block B and parts of D. Used sparingly.
 - **Slides / whiteboarding (~5–10%)** — only for the handful of concepts where a picture beats code:
@@ -90,6 +98,7 @@ Total learner time per week: ~1 hr class + 3–4 hrs outside. The ratio is delib
   - Session 14–15: scoping a research question
 
 ### Six pedagogical principles (Section 5 of the brief — memorize these)
+
 1. **Data-first, not syntax-first.** Every concept introduced through a data example.
 2. **Real datasets, not toys.** NHANES or realistic approximations. Never "sort this list of numbers."
 3. **Research-grade output from day one.** Every session produces a tangible artifact.
@@ -98,6 +107,7 @@ Total learner time per week: ~1 hr class + 3–4 hrs outside. The ratio is delib
 6. **Avoid scope creep.** See out-of-scope list above. No silent expansion.
 
 ### Known stall points (Section 5.4 — design exercises AROUND these)
+
 - **Sessions 3–4:** Conceptual leap from lists/dicts to DataFrames. Needs explicit bridging.
 - **Session 7:** First NHANES merge — often produces unexpected row counts.
 - **Sessions 8–9:** Missing data handling — learners silently include missing-coded values in calculations.
@@ -122,44 +132,46 @@ Total learner time per week: ~1 hr class + 3–4 hrs outside. The ratio is delib
 
 ### Per-session files (standard structure)
 
-Every session folder (S2 onwards) contains exactly these four files:
+Every session folder (S2 onwards) contains exactly these files:
 
 1. **`pre-read.ipynb`** — Learner reads before class. Introduces syntax/vocabulary. Ends with 3 self-check questions with hidden answers.
-2. **`classwork-template.ipynb`** — Skeleton used live in class. Scaffolding with `# Your code here` placeholders. **Solutions deliberately blank** — learner types during Block C.
+2. **`classwork.ipynb`** — The complete classwork notebook used live in class. Contains all exercises with solutions filled in. One file, no template/solution split.
 3. **`homework.ipynb`** — Assigned end of session, due before next. Multi-part with reflection cells + hooks to journal and reference sheet.
-4. **`instructor-notes.md`** — Full session plan: metadata, learning objective, prerequisites, block-by-block delivery, common mistakes, assessment signals, pacing notes, post-session checklist, future delivery notes section.
+4. **`homework-solution.ipynb`** — Expected solutions for the homework, with instructor notes. Stays in this repo only; never copied to learner's Drive folder.
+5. **`instructor-notes.md`** — Full session plan: metadata, learning objective, prerequisites, block-by-block delivery, common mistakes, assessment signals, pacing notes, post-session checklist, future delivery notes section.
 
 **Session 1 is the only exception:** `before-session-1-setup.md` instead of `pre-read.ipynb`, because there's no "session 0."
-
-### Pending: classwork-solution.ipynb (per session)
-
-Agreed but not yet implemented: each session folder should also have an `classwork-solution.ipynb` — the expected solutions to every exercise, with instructor comments. Stays in this repo only; **never copied to learner's Drive folder**. Add this for Session 1 and 2 retroactively, and for all new sessions from creation.
 
 ---
 
 ## Quality bar & style conventions
 
 ### For `instructor-notes.md`
+
 - Section structure must match Sessions 1 and 2 exactly (for consistency across instructors)
 - Block timings must sum to 60 minutes
 - "Common mistakes to watch for" must be specific and pedagogical, not generic
-- "Assessment signal" must be observable — what does the instructor *see* or *hear* that confirms understanding
+- "Assessment signal" must be observable — what does the instructor _see_ or _hear_ that confirms understanding
 - Always include a "Future delivery notes" empty section at the bottom for instructors to append to
 
 ### For `pre-read.ipynb`
+
 - Time estimate stated at top (target: 30–45 min)
 - Every concept grounded in health-data context — never abstract
 - At least one "tiny exercise" embedded mid-way so the learner is doing, not just reading
 - 3 self-check questions at the end, with answers hidden below (reveal pattern: "try first, then peek")
 - Tone: patient but not patronizing. Assume intelligent adult with no prior Python.
 
-### For `classwork-template.ipynb`
+### For `classwork.ipynb`
+
 - Opens with the session's learning goal stated plainly
 - Includes a quick recap of the pre-read (3–5 cells max)
-- Block C exercises use `# Your code here` placeholders — solutions are NEVER pre-filled in the template
+- All exercises include complete solutions (no blank placeholders)
+- Expected output stated in markdown cells after exercise code
 - Always ends with the wrap instructions (save, journal, homework)
 
 ### For `homework.ipynb`
+
 - Time estimate at top (target: 2–3 hours total)
 - 5–7 parts, each ~15–40 min, producing one clear artifact
 - At least one reflection markdown cell for learner's own words
@@ -167,6 +179,7 @@ Agreed but not yet implemented: each session folder should also have an `classwo
 - Always ends with "Journal + reference sheet" section as the final part
 
 ### Voice & tone across all materials
+
 - Direct, warm, specific. No corporate-speak. No false cheerfulness.
 - Use "you" for learner-facing content; use "the learner" / "the instructor" in instructor notes
 - Avoid em-dashes if possible; prefer sentence breaks
@@ -174,6 +187,7 @@ Agreed but not yet implemented: each session folder should also have an `classwo
 - Second-person instructor notes are fine ("you'll want to watch for...")
 
 ### Data & code conventions
+
 - All health-data examples should use realistic value ranges (ages 18–75, BMI 18–40, BP within physiological bounds)
 - Variable names use snake_case and are descriptive (`patient_age`, not `a` or `x`)
 - When introducing a new pandas idiom, always show `.head()` / `.shape` / `.dtypes` inspection around it
@@ -189,10 +203,10 @@ For each upcoming session N:
 2. Open `curriculum/session-N/` and read `instructor-notes.md`
 3. Copy relevant files into the learner's Drive folder:
    - ✅ `pre-read.ipynb`
-   - ✅ `classwork-template.ipynb` (renamed to `session-NN-notes.ipynb` for the learner)
+   - ✅ `classwork.ipynb` (renamed to `session-NN-notes.ipynb` for the learner)
    - ✅ `homework.ipynb`
    - ❌ NOT `instructor-notes.md`
-   - ❌ NOT `classwork-solution.ipynb` (when it exists)
+   - ❌ NOT `homework-solution.ipynb`
 4. Share pre-read with learner 2 days before class (WhatsApp nudge + Drive link)
 5. Deliver the session per the block plan
 6. Post-session: add any useful observations to `instructor-notes.md` → "Future delivery notes" section, commit
@@ -201,11 +215,12 @@ For each upcoming session N:
 
 ## Track status
 
-- ✅ **Session 1** — Orientation, first code, first DataFrame (files complete, solutions pending)
-- ✅ **Session 2** — Lists/dicts → Pandas columns, single-vs-double brackets stall point (files complete, solutions pending)
+- ✅ **Session 1** — Orientation, first code, first DataFrame (all files complete)
+- ✅ **Session 2** — Lists/dicts → Pandas columns, single-vs-double brackets stall point (all files complete)
 - ⏳ **Sessions 3–16** — To design
 
 ### Session 3 design (next up)
+
 - **Topic:** Control flow — if/else and loops — applied to the patient CSV
 - **Pre-read covers:** if/else syntax, for loops over lists, comparison operators, boolean logic
 - **Live session focus:** Using control flow for data filtering; bridges to the boolean-filtering stretch from Session 2 homework ("remember that weird `df[df['sex']=='M']` thing? Here's why it works")
@@ -213,6 +228,7 @@ For each upcoming session N:
 - **Homework artifact:** A short filter-and-summarize exercise producing a group comparison (e.g., mean BP by sex, mean weight by age bracket)
 
 ### Sessions 4–16 (outline only — full design pending)
+
 - **S4:** Functions — reusable operations. Introduce `def`, parameters, return values. Build a small health-data utility.
 - **S5:** CSV workflow consolidation — the learner takes a messy CSV and produces a clean analysis script. Capstone of Phase 1.
 - **S6:** NHANES introduction — file organization, XPT format, first download. Pre-read includes CDC site navigation.
@@ -232,6 +248,7 @@ For each upcoming session N:
 ## When working on this repo
 
 ### Good instincts
+
 - When designing a new session, **first read Sessions 1 and 2** to match the style and quality bar
 - **Always validate notebooks** (`nbformat.validate`) after generating them — a broken `.ipynb` wastes learner time in class
 - **Run code in notebooks mentally** — imagine you're the learner typing this. Does it work? Is the error message helpful if they mistype?
@@ -239,6 +256,7 @@ For each upcoming session N:
 - **Commit frequently** with descriptive messages: `S07: split merge exercise into two steps, learners stall on SEQN concept`
 
 ### Things to avoid
+
 - Don't drift from the block structure. Every session = A/B/C/D/E, 60 min.
 - Don't add out-of-scope content even if it seems useful (see out-of-scope list above).
 - Don't pre-fill solutions in `classwork-template.ipynb` — that kills productive struggle.
@@ -247,6 +265,7 @@ For each upcoming session N:
 - Don't introduce new pedagogical patterns without flagging the deviation and checking with the maintainer.
 
 ### Working rhythm
+
 When the maintainer asks to design a new session:
 
 1. Read the target session's entry in the Sessions 4–16 outline above
@@ -287,4 +306,4 @@ git push
 
 ---
 
-*Last updated: with Session 2 completion. Update the "Track status" section whenever a session is completed or the design outline changes.*
+_Last updated: with Session 2 completion. Update the "Track status" section whenever a session is completed or the design outline changes._
