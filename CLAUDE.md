@@ -218,15 +218,16 @@ For each upcoming session N:
 - ✅ **Session 1** — Orientation, first code, first DataFrame (all files complete)
 - ✅ **Session 2** — Lists/dicts → Pandas columns, single-vs-double brackets stall point (all files complete)
 - ✅ **Session 3** — Control flow, boolean filtering, loop vs vectorized stall point (all files complete)
-- ⏳ **Sessions 4–16** — To design
+- ✅ **Session 4** — Functions: stop repeating yourself, print vs return stall point (all files complete)
+- ⏳ **Sessions 5–16** — To design
 
-### Session 4 design (next up)
+### Session 5 design (next up)
 
-- **Topic:** Functions — reusable operations. Introduce `def`, parameters, return values. Build a small health-data utility.
-- **Pre-read covers:** `def` syntax, parameters, return values, calling functions
-- **Live session focus:** The repetitive if/elif/else block from Session 3 homework (BMI classification) becomes the motivation: "You wrote that same block three times. Let's fix that." Wrap it in a function, then apply it.
-- **Stall point:** Likely the difference between printing inside a function vs returning a value. Learners confuse `print()` with `return`.
-- **Homework artifact:** A small health-data utility: a `classify_bmi()` function and a `classify_bp()` function, applied to the patient CSV.
+- **Topic:** CSV workflow consolidation — Phase 1 capstone. The learner takes a messy CSV and produces a clean analysis script using everything from Sessions 1–4.
+- **Pre-read covers:** TBD
+- **Live session focus:** TBD
+- **Stall point:** TBD
+- **Homework artifact:** TBD
 
 ### Sessions 5–16 (outline only — full design pending)
 
@@ -307,4 +308,4 @@ git push
 
 ---
 
-_Last updated: with Session 2 completion. Update the "Track status" section whenever a session is completed or the design outline changes._
+_Last updated: with Session 4 completion. Update the "Track status" section whenever a session is completed or the design outline changes._

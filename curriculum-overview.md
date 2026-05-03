@@ -13,7 +13,7 @@ Build core Python fluency through health-data examples. Every concept is grounde
 | **S1** | Orientation, first code, first DataFrame | Colab environment, variables, data types (`int`, `float`, `str`, `bool`), `print()`, first CSV load | File path + Drive mounting |
 | **S2** | Lists, dicts, and DataFrame columns | Lists, dictionaries, `pd.read_csv`, `.head()` / `.shape` / `.columns` / `.dtypes`, column selection | Single vs double bracket (`df['col']` vs `df[['col']]`) |
 | **S3** | Control flow — if/else and loops | Comparison operators, boolean logic, `if`/`else`, `for` loops, boolean filtering in pandas | Python loop vs pandas vectorized operations |
-| **S4** | Functions | `def`, parameters, return values, building a reusable health-data utility | — |
+| **S4** | Functions — stop repeating yourself | `def`, parameters, `return` vs `print()`, reusable classification functions on patient CSV + NHANES | `print()` vs `return` confusion (`None` result) |
 | **S5** | CSV workflow consolidation (Phase 1 capstone) | End-to-end: messy CSV → clean analysis script | — |
 
 **Phase 1 outcome:** The learner can write a Python script that loads a CSV, inspects it, filters rows, computes summary statistics, and produces a clean output.
